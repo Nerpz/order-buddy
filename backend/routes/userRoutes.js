@@ -3,7 +3,6 @@ const router = express.Router();
 import {
   authUser,
   getUsers,
- 
   getUserById,
   updateUser,
   registerUser,

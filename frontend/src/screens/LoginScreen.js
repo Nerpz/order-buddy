@@ -20,7 +20,7 @@ const LoginScreen = ({ location, history }) => {
 
   useEffect(() => {
     if (userInfo) {
-      history.push('/');
+      history.push('/home');
     }
   }, [history, userInfo, redirect]);
 
@@ -28,7 +28,7 @@ const LoginScreen = ({ location, history }) => {
     e.preventDefault();
     dispatch(login(username, password));
   };
-
+  
   return (
     <FormContainer>
       <h1>Sign In</h1>

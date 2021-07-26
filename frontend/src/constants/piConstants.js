@@ -1,0 +1,10 @@
+export const GET_PI_REQUEST = "GET_PI_REQUEST"
+export const GET_PI_SUCCESS = "GET_PI_SUCCESS"
+export const GET_PI_FAIL = "GET_PI_FAIL"
+export const ADD_PRODUCT_REQUEST = "GET_PI_REQUEST"
+export const ADD_PRODUCT_SUCCESS = "GET_PI_SUCCESS"
+export const ADD_PRODUCT_FAIL = "GET_PI_FAIL"
+export const EDIT_QTY_REQUEST = "GET_PI_REQUEST"
+export const EDIT_QTY_SUCCESS = "GET_PI_SUCCESS"
+export const EDIT_QTY_FAIL = "GET_PI_FAIL"
+

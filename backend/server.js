@@ -5,6 +5,7 @@ import { notFound, errorHandler } from './middleware/errorMiddleware.js';
 import connectDB from './config/db.js';
 import colors from 'colors';
 import userRoutes from './routes/userRoutes.js';
+import productRoutes from './routes/productRoutes.js';
 
 
 // ENV Variables during development
@@ -20,6 +21,7 @@ app.use(express.json());
 
 // routes
 app.use('/api/users', userRoutes);
+app.use('/api/pi', productRoutes);
 
 // Post Build
 const __dirname = path.resolve();
