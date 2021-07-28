@@ -6,6 +6,9 @@ GET_PI_FAIL,
 ADD_PRODUCT_SUCCESS,
 ADD_PRODUCT_FAIL,
 ADD_PRODUCT_REQUEST,
+ADD_ITEM_SUCCESS,
+ADD_ITEM_FAIL,
+ADD_ITEM_REQUEST,
 EDIT_QTY_REQUEST,
 EDIT_QTY_SUCCESS,
 EDIT_QTY_FAIL,
@@ -92,6 +95,58 @@ try {
   dispatch({
 
     type: ADD_PRODUCT_FAIL,
+
+    payload:
+
+      error.response && error.response.data.message
+
+        ? error.response.data.message
+
+        : error.message,
+
+  });
+ }
+};
+
+export const addNewItem = (token, productId, body) => async (dispatch, getState) => {
+try {
+   const {
+      userLogin: { userInfo },
+    } = getState()
+   
+   dispatch({
+      type: ADD_ITEM_REQUEST
+   })
+
+  
+ 
+   
+   const config = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    };
+    
+
+    const { data } = await axios.post(`/api/pi/product/${productId}`, body, config);
+
+   
+    
+    dispatch({
+      type: ADD_ITEM_SUCCESS,
+    });
+    dispatch({
+      type: GET_PI_SUCCESS,
+      payload: data
+   })
+   
+} catch (error) {
+   if(error.message === 'Not authorized, token failed'){
+      dispatch(logout())
+   }
+  dispatch({
+
+    type: ADD_ITEM_FAIL,
 
     payload:
 

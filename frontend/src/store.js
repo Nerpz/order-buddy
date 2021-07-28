@@ -15,7 +15,8 @@ import {
   addNewProductReducer,
   editQtyProductReducer,
   deleteItemReducer,
-  deleteProductReducer
+  deleteProductReducer,
+  addNewItemReducer
 } from './reducers/piReducers'
 
 const reducer = combineReducers({
@@ -30,6 +31,8 @@ const reducer = combineReducers({
   editQtyProduct: editQtyProductReducer,
   deleteItem: deleteItemReducer,
   deleteProduct: deleteProductReducer,
+  addNewItem: addNewItemReducer
+
 });
 
 const userInfoFromStorage = localStorage.getItem('userInfo')

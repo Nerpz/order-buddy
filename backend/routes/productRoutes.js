@@ -17,18 +17,18 @@ router
 router
   .route('/product')
   .post(protect, postNewProduct)
-router
-  .route('/product/:productid')
-  .post(protect, postNewProductItem)
-  .put(protect, putProductEdit)
+
+  
+  
 router
   .route('/qty/:productid/:itemid')
   .put(protect, addQtyItem)
   
   router
   .route('/product/:productId')
+  .post(protect, postNewProductItem)
   .delete(protect, deleteProduct)
-
+  .put(protect, putProductEdit)
   router
   .route('/item/:productId/:itemId')
   .delete(protect, deleteProductItem)

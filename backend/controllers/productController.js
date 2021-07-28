@@ -64,7 +64,7 @@ const postNewProductItem = asyncHandler(async (req,res) => {
 
       let matchedIndex = -1;
       await productInventory.products.forEach((product, i)=>{
-         if(`${product._id}` === `${req.params.productid}`){
+         if(product._id.toString() === req.params.productId){
             matchedIndex = i;
          } else return;
       })

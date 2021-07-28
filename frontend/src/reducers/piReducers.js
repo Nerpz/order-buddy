@@ -5,6 +5,9 @@ GET_PI_FAIL,
 ADD_PRODUCT_SUCCESS,
 ADD_PRODUCT_FAIL,
 ADD_PRODUCT_REQUEST,
+ADD_ITEM_SUCCESS,
+ADD_ITEM_FAIL,
+ADD_ITEM_REQUEST,
 EDIT_QTY_REQUEST,
 EDIT_QTY_SUCCESS,
 EDIT_QTY_FAIL,
@@ -14,6 +17,7 @@ DELETE_ITEM_FAIL,
 DELETE_PRODUCT_REQUEST,
 DELETE_PRODUCT_SUCCESS,
 DELETE_PRODUCT_FAIL,
+
 } from '../constants/piConstants'
 
 export const getPiSheetReducer = (state = {}, action) => {
@@ -36,6 +40,18 @@ export const addNewProductReducer = (state = {}, action) => {
      case ADD_PRODUCT_SUCCESS:
        return { loading: false };
      case ADD_PRODUCT_FAIL:
+       return { loading: false, error: action.payload };
+     default:
+       return state;
+   }
+ };
+export const addNewItemReducer = (state = {}, action) => {
+   switch (action.type) {
+     case ADD_ITEM_REQUEST:
+       return { loading: true };
+     case ADD_ITEM_SUCCESS:
+       return { loading: false };
+     case ADD_ITEM_FAIL:
        return { loading: false, error: action.payload };
      default:
        return state;

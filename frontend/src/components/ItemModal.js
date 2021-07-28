@@ -1,7 +1,7 @@
 import {useDispatch} from 'react-redux'
 import FormContainer from './FormContainer'
 import {useState} from 'react'
-import {deleteProductItem, deleteProduct} from '../actions/piActions'
+import {deleteProductItem, deleteProduct, addNewItem} from '../actions/piActions'
 import {Modal, Button, Table, Form, Container} from 'react-bootstrap'
 
 const ItemModal = (props) => {
@@ -23,7 +23,14 @@ const ItemModal = (props) => {
     if(material === '' || color === '' || quantity === '' || threshold === ''  ){
       alert('fill in all fields')
     } else {
-      alert('Nice')
+      const body = {
+        material,
+        color,
+        qty: quantity,
+        threshold
+      }
+      dispatch(addNewItem(token, product._id, body))
+     
     }
   }
   const handleDeleteProduct = ( ) => {
