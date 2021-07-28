@@ -5,7 +5,9 @@ import {
   postNewProduct,
   postNewProductItem,
   putProductEdit,
-  addQtyItem
+  addQtyItem,
+  deleteProductItem,
+  deleteProduct
 } from '../controllers/productController.js';
 import { protect, admin } from '../middleware/authMiddleware.js';
 
@@ -23,6 +25,12 @@ router
   .route('/qty/:productid/:itemid')
   .put(protect, addQtyItem)
   
+  router
+  .route('/product/:productId')
+  .delete(protect, deleteProduct)
 
+  router
+  .route('/item/:productId/:itemId')
+  .delete(protect, deleteProductItem)
 
 export default router;

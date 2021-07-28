@@ -9,6 +9,12 @@ ADD_PRODUCT_REQUEST,
 EDIT_QTY_REQUEST,
 EDIT_QTY_SUCCESS,
 EDIT_QTY_FAIL,
+DELETE_ITEM_REQUEST,
+DELETE_ITEM_SUCCESS,
+DELETE_ITEM_FAIL,
+DELETE_PRODUCT_REQUEST,
+DELETE_PRODUCT_SUCCESS,
+DELETE_PRODUCT_FAIL,
 } from '../constants/piConstants';
 import {logout} from './userActions'
 
@@ -99,19 +105,21 @@ try {
  }
 };
 
-export const editQtyProduct = (quantity, productId, itemId) => async (dispatch, getState) => {
+export const editQtyProduct = (token, quantity, productId, itemId) => async (dispatch, getState) => {
       try {
          dispatch({type: EDIT_QTY_REQUEST})
          const {
                userLogin: { userInfo },
             } = getState()
-         const config = {headers: {Authorization: `Bearer ${userInfo.token}`}};
+         const config = {headers: {Authorization: `Bearer ${token}`}};
          const body = {qty: quantity}
-         const data = axios.put(`/api/pi/qty/${productId}/${itemId}`, body, config)
+         const {data} = await axios.put(`/api/pi/qty/${productId}/${itemId}`, body, config)
 
-         dispatch({type: EDIT_QTY_SUCCESS, payload: data})
-         dispatch({type: GET_PI_REQUEST})
-         dispatch({type: GET_PI_SUCCESS, payload: data})
+         dispatch({
+            type: EDIT_QTY_SUCCESS,
+            payload: data
+          });
+         
 
 
       } catch (error) {
@@ -132,3 +140,75 @@ export const editQtyProduct = (quantity, productId, itemId) => async (dispatch, 
          });
        }
       };
+
+      export const deleteProduct = (token, productId) => async (dispatch) => {
+         try {
+            
+            dispatch({type: DELETE_PRODUCT_REQUEST})
+         
+            const config = {headers: {Authorization: `Bearer ${token}`}};
+            
+            const {data} = await axios.delete(`/api/pi/product/${productId}`, config)
+   
+          dispatch({
+             type: GET_PI_SUCCESS,
+             payload: data
+          })
+          dispatch({
+               type: DELETE_PRODUCT_SUCCESS,
+             });
+          
+         } catch (error) {
+               if(error.message === 'Not authorized, token failed'){
+                  dispatch(logout())
+               }
+            dispatch({
+               type: DELETE_PRODUCT_FAIL,
+            
+               payload:
+            
+                  error.response && error.response.data.message
+            
+                  ? error.response.data.message
+            
+                  : error.message,
+            
+            });
+          }
+      }
+
+      export const deleteProductItem = (token, productId, itemId) => async (dispatch) => {
+         try {
+            
+            dispatch({type: DELETE_ITEM_REQUEST})
+         
+            const config = {headers: {Authorization: `Bearer ${token}`}};
+            
+            const {data} = await axios.delete(`/api/pi/item/${productId}/${itemId}`, config)
+   
+          dispatch({
+             type: GET_PI_SUCCESS,
+             payload: data
+          })
+          dispatch({
+               type: DELETE_ITEM_SUCCESS,
+             });
+          
+         } catch (error) {
+               if(error.message === 'Not authorized, token failed'){
+                  dispatch(logout())
+               }
+            dispatch({
+               type: DELETE_ITEM_FAIL,
+            
+               payload:
+            
+                  error.response && error.response.data.message
+            
+                  ? error.response.data.message
+            
+                  : error.message,
+            
+            });
+          }
+      }

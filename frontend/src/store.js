@@ -13,7 +13,9 @@ import {
 import {
   getPiSheetReducer,
   addNewProductReducer,
-  editQtyProductReducer
+  editQtyProductReducer,
+  deleteItemReducer,
+  deleteProductReducer
 } from './reducers/piReducers'
 
 const reducer = combineReducers({
@@ -25,7 +27,9 @@ const reducer = combineReducers({
   userUpdate: userUpdateReducer,
   piData:   getPiSheetReducer,
   addNewProduct: addNewProductReducer,
-  editQtyProduct: editQtyProductReducer
+  editQtyProduct: editQtyProductReducer,
+  deleteItem: deleteItemReducer,
+  deleteProduct: deleteProductReducer,
 });
 
 const userInfoFromStorage = localStorage.getItem('userInfo')

@@ -1,3 +1,4 @@
+
 import asyncHandler from 'express-async-handler';
 import ProductInventory from '../models/ProductInventoryModel.js'
 
@@ -16,18 +17,13 @@ const getProductInventory = asyncHandler(async(req, res)=>{
 })
 const postNewProduct = asyncHandler(async(req, res)=>{
    const user = req.user;
-   const {title, description, material, color, quantity, threshold} = req.body;
+   const {title, description} = req.body;
 
-   if(!title || !material || !color || !quantity || !threshold){
+   if(!title){
       res.json({message: "Include a product title."})
    }
    const productInventory = await ProductInventory.findOne({user});
-   const newItem = {
-      material: material,
-      color: color,
-      qty: quantity,
-      threshold: threshold
-   }
+   
 
    if(productInventory){
       let titleIndex = -1;
@@ -37,16 +33,14 @@ const postNewProduct = asyncHandler(async(req, res)=>{
          } else return;
       })
       if(titleIndex !== -1){
-         productInventory.products[titleIndex].items.push(newItem)
-         productInventory.save()
-         res.json(productInventory)
+         throw new Error('Product Title Exist Already.')
       } else {
 
          let product = {};
          product.title = title;
          product.description = description || '';
          product.items = [];
-         product.items.push(newItem);
+      
          productInventory.products.push(product)
          productInventory.save();
          res.json(productInventory)
@@ -129,17 +123,77 @@ const putProductEdit = asyncHandler(async (req,res) => {
    const productInventory = await ProductInventory.findOne({user});
    if(!productInventory){throw new Error('Inventory not found')}
    else {
-      console.log(req.body.item)
+     
       res.json({message: 'putedit'})
    }
 })
+const deleteProduct = asyncHandler(async (req,res) => {
+   const user = req.user;
+   const productId = req.params.productId;
+   console.log(productId)
+   const productInventory = await ProductInventory.findOne({user})
+   console.log(productInventory.products)
+   if(!productInventory){
+      throw new Error('Product Inventory not found')
+   } else {
+      let newProductInventory = productInventory;
+      let matchedProductIndex = -1;
+      await productInventory.products.forEach((product, i)=> {
+         if(product._id.toString() === productId){
+            matchedProductIndex = i;
+         } else return
+      })
+      if(matchedProductIndex > -1) {
+        await newProductInventory.products.splice(matchedProductIndex, 1)
+        await newProductInventory.save()
 
+        res.json(newProductInventory)
+      }
+      
+     
+      
+   }
+})
 
+const deleteProductItem = asyncHandler(async (req, res) => {
+   
+   const user = req.user;
+   const productId = req.params.productId;
+   const itemId = req.params.itemId;
+
+   const productInventory = await ProductInventory.findOne({user});
+   if(!productInventory){throw new Error('Inventory not found')} else {
+      let newProductInventory = productInventory
+      let matchedProductIndex = -1;
+      let matchedItemIndex = -1;
+
+      await productInventory.products.forEach((product, pI) => {
+         if(product._id.toString() === productId.toString()) {
+            matchedProductIndex = pI;
+         }
+      })
+
+      if(matchedProductIndex > -1){
+         await productInventory.products[matchedProductIndex].items.forEach((item, iI)=>{
+            if(item._id.toString() === itemId.toString()){
+               matchedItemIndex = iI;
+            }
+         })
+         if(matchedItemIndex > -1) {
+            await newProductInventory.products[matchedProductIndex].items.splice(matchedItemIndex, 1)
+            await newProductInventory.save()
+            res.json(newProductInventory)
+         } else {throw new Error('No item match')}
+      } else {throw new Error('No product match')}
+   }
+})
 
 export {
    getProductInventory,
    postNewProduct,
    postNewProductItem,
    putProductEdit,
-   addQtyItem
+   addQtyItem,
+   deleteProductItem,
+   deleteProduct
 }
