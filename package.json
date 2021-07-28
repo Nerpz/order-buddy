@@ -2,6 +2,7 @@
   "name": "order-buddy",
   "version": "1.0.0",
   "description": "Order and product inventory manager",
+  "engines":{"node": "15.x"},
   "main": "server.js",
   "type": "module",
   "scripts": {
